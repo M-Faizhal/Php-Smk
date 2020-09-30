@@ -1,39 +1,9 @@
-<div style="margin : auto; width : 900px;">
+<?php
 
-<h3><a href="http://localhost/PhpSmk/Restoran/Kategori/Insert.php">Tambah Data</a></h3>
-
-<?php 
-
-    require_once "../Function.php";
-
-    if (isset ($_GET ['update'])) {
-        $Id = $_GET ['update'];
-        require_once "Update.php";
-    }
-
-    if (isset ($_GET ['hapus'])) {
-        $Id = $_GET ['hapus'];
-        require_once "Delete.php";
-    }
-
-    echo '<br>';
-
-    $SQL = "SELECT idkategori FROM tblkategori";
-
-    $Result = mysqli_query($Koneksi, $SQL);
-
-    $JumlahData = mysqli_num_rows ($Result);
-
-    $Banyak = 3;
+    $JumlahData = $Db -> rowCount ("SELECT idkategori FROM tblkategori");
+    $Banyak = 4;
 
     $Halaman = ceil ($JumlahData / $Banyak);
-
-    for ($i = 1; $i <=  $Halaman; $i++) { 
-        echo '<a href="?p=' . $i . '">' . $i . '</a>';
-        echo '&nbsp &nbsp &nbsp';
-    }
-
-    echo '<br> <br>';
 
     if (isset ($_GET ['p'])) {
         $p = $_GET ['p'];
@@ -44,41 +14,41 @@
         $Mulai = 0;
     }
 
-    $SQL = "SELECT * FROM tblkategori LIMIT $Mulai, $Banyak";
+    $SQL = "SELECT * FROM tblkategori ORDER BY kategori ASC LIMIT $Mulai, $Banyak";
+    $Row = $Db -> getAll($SQL);
 
-    $Result = mysqli_query($Koneksi, $SQL);
+    $No = 1 + $Mulai;
+?>
+<div class="float-left mr-4">
+    <a class="btn btn-primary" href="?f=Kategori&m=Insert" role="button">TAMBAH DATA</a>
+</div>
+<h3>Kategori</h3>
+<table class="table table-bordered w-50">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Kategori</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($Row as $r) : ?>
+        <tr>
+            <td><?php echo $No++?></td>
+            <td><?php echo $r['kategori']?></td>
+            <td><a href="?f=Kategori&m=Delete&id=<?php echo $r['idkategori']?>">Delete</a></td>
+            <td><a href="?f=Kategori&m=Update&id=<?php echo $r['idkategori']?>">Update</a></td>
+        </tr>
+        <?php endforeach?>
+    </tbody>
+</table>
 
-    // var_dump($Result);
+<?php 
 
-    $Jumlah = mysqli_num_rows($Result);
-    // echo '<br>';
-    // echo $Jumlah;
-
-    echo '
-            <table border="1px">
-            <tr>
-                <th>No</th>
-                <th>Kategori</th>
-                <th>Hapus</th>
-                <th>Update</th>
-            </tr>
-        ';
-
-        $No = $Mulai + 1;
-
-    if ($Jumlah > 0) {
-        while ($Row = mysqli_fetch_assoc ( $Result )) {
-            echo '<tr>';
-            echo '<td>' . $No++ . '</td>';
-            echo '<td>' . $Row ['kategori'] . '</td>';
-            echo '<td><a href="?hapus=' . $Row ['idkategori'] . '">' . 'Hapus' . '</a></td>';
-            echo '<td><a href="?update=' . $Row ['idkategori'] . '">' . 'Update' . '</a></td>';
-            echo '</tr>';
-        }
+    for ($i = 1; $i <=  $Halaman; $i++) { 
+        echo '<a href="?f=Kategori&m=Select&p=' . $i . '">' . $i . '</a>';
+        echo '&nbsp &nbsp &nbsp';
     }
 
-    echo '</table>';
-
 ?>
-
-</div>

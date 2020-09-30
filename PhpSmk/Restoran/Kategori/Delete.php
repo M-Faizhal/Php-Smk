@@ -1,11 +1,13 @@
 <?php 
 
-    require_once "../Function.php";
+    if (isset ($_GET ['id'])) {
+        $Id = $_GET ['id'];
 
-    $SQL = "DELETE FROM tblkategori WHERE idkategori = $Id";
+        $SQL = "DELETE FROM tblkategori WHERE idkategori=$Id";
 
-    $Result = mysqli_query ($Koneksi, $SQL);
+        $Db -> runSQL ($SQL);
 
-    header ("location:http://localhost/PhpSmk/Restoran/Kategori/Select.php");
+        header ("location:?f=Kategori&m=Select");
+    }
 
 ?>

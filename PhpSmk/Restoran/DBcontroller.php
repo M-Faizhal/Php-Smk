@@ -26,7 +26,9 @@
                 $Data [] = $Row;
             }
 
-            return $Data;
+            if (!empty ($Data)) {
+                return $Data;
+            }
         }
 
         public function getItem($SQL)
