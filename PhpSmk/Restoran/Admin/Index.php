@@ -1,7 +1,16 @@
 <?php 
 
+    session_start ();
     require_once "../DBcontroller.php";
     $Db = new DB;
+
+    if (!isset ($_SESSION ['user'])) {
+        header ("location:Login.php");
+    }
+    if (isset ($_GET ['Log'])) {
+        session_destroy();
+        header ("location:Index.php");
+    }
 
 ?>
 
@@ -20,7 +29,8 @@
                 <h2>Restoran</h2>
             </div>
             <div class="col-md-9">
-                <div class="float-right mt-4">Logout</div>
+                <div class="float-right mt-4"><a href="?Log=Logout">Logout</a></div>
+                <div class="float-right mt-4 mr-4">User : <a href="?f=User&m=Updateuser&id=<?php echo $_SESSION ['iduser'] ?>"><?php echo $_SESSION ['user'] ?></a></div>
             </div>
         </div>
         <div class="row mt-5">

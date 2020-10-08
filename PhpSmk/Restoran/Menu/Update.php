@@ -1,5 +1,15 @@
 <?php 
 
+    if (isset ($_GET ['id'])) {
+        $Id = $_GET ['id'];
+
+        $SQL = "SELECT * FROM tblmenu WHERE idmenu = $Id";
+
+        $Item = $Db -> getItem ($SQL);
+
+        $idkategori = $Item ['idkategori'];
+    }
+
     $Row =$Db -> getAll ("SELECT * FROM tblkategori ORDER BY kategori ASC");
 
 ?>
@@ -11,17 +21,17 @@
             <label for="">Kategori</label><br>
             <select name="idkategori" id="">
                 <?php foreach ($Row as $R): ?>
-                <option value="<?php echo $R ['idkategori'] ?>"><?php echo $R ['kategori'] ?></option>
+                <option <?php if ($idkategori == $R ['idkategori']) echo "selected"?> value="<?php echo $R ['idkategori'] ?>"><?php echo $R ['kategori'] ?></option>
                 <?php endforeach ?>
             </select>
         </div>
         <div class="form-group w-50">
             <label for="">Nama Menu</label>
-            <input type="text" name="Menu" required placeholder="Isi Menu" class="form-control">
+            <input type="text" name="Menu" required value="<?php echo $Item ['menu']?>" class="form-control">
         </div>
         <div class="form-group w-50">
             <label for="">Harga</label>
-            <input type="text" name="Harga" number required placeholder="Isi Harga" class="form-control">
+            <input type="text" name="Harga" number required value="<?php echo $Item ['harga']?>" class="form-control">
         </div>
         <div class="form-group w-50">
             <label for="">Gambar</label><br>
@@ -39,19 +49,18 @@
         $idkategori = $_POST ['idkategori'];
         $Menu = $_POST ['Menu'];
         $Harga = $_POST ['Harga'];
-        $Gambar = $_FILES ['Gambar']['name'];
+        $Gambar = $Item ['gambar'];
         $Tmp = $_FILES ['Gambar']['tmp_name'];
 
-        if (empty ($Gambar)) {
-            echo "<h3>Gambar Kosong</h3>";
-        }
-        else {
-            $SQL = "INSERT INTO tblmenu VALUES ('', $idkategori , '$Menu' , '$Gambar' , '$Harga')";
+        if (!empty ($Tmp)) {
+            $Gambar = $_FILES ['Gambar']['name'];
             move_uploaded_file ($Tmp,'../Upload/' . $Gambar);
-            $Db -> runSQL ($SQL);
-            header ("location:?f=Menu&m=Select");
         }
-    
+
+        $SQL = "UPDATE tblmenu SET idkategori = $idkategori, menu = '$Menu', gambar = '$Gambar', harga = $Harga WHERE idmenu = $Id";
+
+        $Db -> runSQL ($SQL);
+        header ("location:?f=Menu&m=Select");
     }
 
 ?>
