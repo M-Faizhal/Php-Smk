@@ -12,6 +12,27 @@
         header ("location:Index.php");
     }
 
+    function Cart () {
+        global $Db;
+        
+        $Cart = 0;
+
+        foreach ($_SESSION as $key => $value) {
+            if ($key <> 'Pelanggan' && $key <> 'idpelanggan') {
+                $Id = substr ($key , 1);
+
+                $SQL = "SELECT * FROM tblmenu WHERE idmenu = $Id";
+
+                $Row = $Db -> getAll ($SQL);
+
+                foreach ($Row as $R) {
+                    $Cart ++;
+                }
+            }
+        }
+        return $Cart;
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +55,9 @@
                 if (isset ($_SESSION ['Pelanggan'])) {
                     echo '
                             <div class="float-right mt-4"><a href="?Log=Logout">Logout</a></div>
-                            <div class="float-right mt-4 mr-4">Pelanggan : <a href="?f=Home&m=Beli"> ' . $_SESSION ['Pelanggan'] . ' </a></div>
+                            <div class="float-right mt-4 mr-4">Pelanggan : ' . $_SESSION ['Pelanggan'] . '</div>
+                            <div class="float-right mt-4 mr-4">Cart : ( <a href="?f=Home&m=Beli"> ' . Cart () . ' </a> )</div>
+                            <div class="float-right mt-4 mr-4"><a href="?f=Home&m=Histori">Histori</a></div>
                     ';
                 }
                 else {

@@ -5,6 +5,7 @@
     if (isset ($_GET ['Hapus'])) {
         $Id = $_GET ['Hapus'];
         unset ($_SESSION ['_' . $Id]);
+        header ("location:?f=Home&m=Beli");
     }
 
     if (isset ($_GET ['Tambah'])) {
@@ -51,6 +52,8 @@
 
         $Total = 0;
 
+        global $Total;
+
         echo '
         
         <table class="table table-bordered w-70">
@@ -90,6 +93,20 @@
             </tr>';
 
         echo '</table>';
+    }
+
+?>
+
+<?php 
+
+    if (!empty ($Total)) {
+
+?>
+
+<a class="btn btn-primary" href="?f=Home&m=Checkout&Total=<?php echo $Total?>" role="button">Checkout</a>
+
+<?php 
+
     }
 
 ?>
