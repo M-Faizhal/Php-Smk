@@ -36,8 +36,8 @@
     if (isset ($_POST ['Simpan'])) {
         $User = $_POST ['User'];
         $Email = $_POST ['Email'];
-        $Password = $_POST ['Password'];
-        $Konfirmasi = $_POST ['Konfirmasi'];
+        $Password = hash ('sha256', $_POST ['Password']);
+        $Konfirmasi = hash ('sha256', $_POST ['Konfirmasi']);
         $Level = $_POST ['Level'];
 
         if ($Password === $Konfirmasi) {

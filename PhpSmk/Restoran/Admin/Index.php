@@ -24,24 +24,50 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-md-3">
-                <h2>Restoran</h2>
+                <a href="Index.php"><h3>Admin Page</h3></a>
             </div>
             <div class="col-md-9">
                 <div class="float-right mt-4"><a href="?Log=Logout">Logout</a></div>
                 <div class="float-right mt-4 mr-4">User : <a href="?f=User&m=Updateuser&id=<?php echo $_SESSION ['iduser'] ?>"><?php echo $_SESSION ['user'] ?></a></div>
+                <div class="float-right mt-4 mr-4">Level : <?php echo $_SESSION ['level']?></div>
             </div>
         </div>
         <div class="row mt-5">
             <div class="col-md-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="?f=Kategori&m=Select">Kategori</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?f=Menu&m=Select">Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?f=Pelanggan&m=Select">Pelanggan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?f=Order&m=Select">Order</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?f=OrderDetail&m=Select">Order Detail</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?f=User&m=Select">User</a></li>
+                    <?php 
+                        $Level = $_SESSION ['level'];
+                        switch ($Level) {
+                            case 'Admin':
+                                echo '
+                                    <li class="nav-item"><a class="nav-link" href="?f=Kategori&m=Select">Kategori</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="?f=Menu&m=Select">Menu</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="?f=Pelanggan&m=Select">Pelanggan</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="?f=Order&m=Select">Order</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="?f=OrderDetail&m=Select">Order Detail</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="?f=User&m=Select">User</a></li>
+                                ';
+                                break;
+                            case 'Kasir':
+                                echo '
+                                    <li class="nav-item"><a class="nav-link" href="?f=Order&m=Select">Order</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="?f=OrderDetail&m=Select">Order Detail</a></li>
+                                ';
+                                break;
+                            case 'Koki':
+                                echo '
+                                    <li class="nav-item"><a class="nav-link" href="?f=OrderDetail&m=Select">Order Detail</a></li>
+                                ';
+                                break;
+                            
+                            default:
+                                echo 'Tidak Ada menu';
+                                break;
+                        }
+                    ?>
+                    
                 </ul>
             </div>
             <div class="col-md-9">

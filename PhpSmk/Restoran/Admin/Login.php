@@ -45,7 +45,7 @@
 
     if (isset ($_POST ['Login'])) {
         $Email = $_POST ['Email'];
-        $Password = $_POST ['Password'];
+        $Password = hash('sha256', $_POST ['Password']);
 
         $SQL = "SELECT * FROM tbluser WHERE email='$Email' AND password='$Password'";
 

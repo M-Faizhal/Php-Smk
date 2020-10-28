@@ -4,10 +4,10 @@
         $Total = $_GET ['Total'];
         $Idorder = idorder();
         $Idpelanggan = $_SESSION ['idpelanggan'];
-        $Tgl =date('Y-m-d');
+        $Tgl = date('Y-m-d');
 
         $SQL = "SELECT * FROM tblorder WHERE idorder = $Idorder";
-
+        
         $Count = $Db -> rowCount ($SQL);
 
         if ($Count == 0) {
@@ -47,10 +47,10 @@
         $Db -> runSQL($SQL);
     }
 
-    function insertOrderDetail ($Idorder = 1) {
+    function insertOrderDetail ($Idorder) {
         global $Db;
         foreach ($_SESSION as $key => $value) {
-            if ($key <> 'Pelanggan' && $key <> 'idpelanggan') {
+            if ($key <> 'Pelanggan' && $key <> 'idpelanggan'  && $key <> 'user'  && $key <> 'level' && $key <> 'iduser') {
                 $Id = substr ($key , 1);
 
                 $SQL = "SELECT * FROM tblmenu WHERE idmenu = $Id";
